@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import Form from './components/Form';
+import ItemList from './components/ItemList';
 
 function App() {
+  const [items, setItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    const storedItems = JSON.parse(localStorage.getItem('items')) || [];
+    setItems(storedItems);
+    
+    const newTotalPrice = storedItems.reduce((total, item) => total + item.price, 0);
+    setTotalPrice(newTotalPrice);
+  }, []);
+
+  const addItem = (newItem) => {
+    const updatedItems = [...items, newItem];
+    setItems(updatedItems);
+
+    localStorage.setItem('items', JSON.stringify(updatedItems));
+
+    setTotalPrice(totalPrice + newItem.price);
+  };
+
+  const handleDelete = (itemId) => {
+    const deletedItem = items.find((item) => item.id === itemId);
+    if (deletedItem) {
+      const updatedItems = items.filter((item) => item.id !== itemId);
+      setItems(updatedItems);
+
+      localStorage.setItem('items', JSON.stringify(updatedItems));
+      setTotalPrice(totalPrice - deletedItem.price);
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Shopping Cart</h1>
+      <Form addItem={addItem} />
+      <ItemList items={items} handleDelete={handleDelete} totalPrice={totalPrice} />
     </div>
   );
 }
