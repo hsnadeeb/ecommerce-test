@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
     const storedItems = JSON.parse(localStorage.getItem('items')) || [];
     setItems(storedItems);
-    
+
     const newTotalPrice = storedItems.reduce((total, item) => total + item.price, 0);
     setTotalPrice(newTotalPrice);
   }, []);
@@ -36,7 +36,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Shopping Cart</h1>
+      <h1>Add Products</h1>
       <Form addItem={addItem} />
       <ItemList items={items} handleDelete={handleDelete} totalPrice={totalPrice} />
     </div>

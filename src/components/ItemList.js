@@ -7,14 +7,14 @@ function ItemList({ items, handleDelete, totalPrice }) {
       <ul>
         {items.map((item) => (
           <li key={item.id}>
-            {item.name} - ${item.price}
+            {item.name} - ₹{item.price}
             <button onClick={() => handleDelete(item.id)}>Delete</button>
           </li>
         ))}
       </ul>
 
       <h2>Total Price Spent</h2>
-      <p>Total: ₹{totalPrice.toFixed(2)}</p>
+      <p><b>Total:</b> ₹{totalPrice.toFixed(2)}</p>
     </div>
   );
 }
